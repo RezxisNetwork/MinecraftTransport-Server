@@ -32,7 +32,8 @@ public class ProxySocketListener implements Runnable {
 				System.out.println("A connection was connected : "+current+ " : "+port);
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			if (!ex.getMessage().contains("Socket closed"))
+				ex.printStackTrace();
 		}
 	}
 	
