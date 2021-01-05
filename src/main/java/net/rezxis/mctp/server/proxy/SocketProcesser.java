@@ -33,8 +33,8 @@ public class SocketProcesser implements Runnable {
 			
 			socket.getOutputStream().write(header.getBytes(), 0, header.getBytes().length);
 			
-			new Thread(new SocketTransporter(endpoint.getInputStream(), socket.getOutputStream(), new CloseCallback(this,cis), true)).start();
-			new Thread(new SocketTransporter(socket.getInputStream(), endpoint.getOutputStream(), new CloseCallback(this,cis), false)).start();
+			new Thread(new SocketTransporter(endpoint.getInputStream(), socket.getOutputStream(), new CloseCallback(this,cis))).start();
+			new Thread(new SocketTransporter(socket.getInputStream(), endpoint.getOutputStream(), new CloseCallback(this,cis))).start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
