@@ -56,6 +56,13 @@ public class MCTPConnection {
         ctx1.pipeline().remove(PacketEncoder.class);
         ctx1.pipeline().remove(MCTPServer.class);
         ChannelHandlerContext waiting = children.get(id);
+        InetSocketAddress local_addr = (InetSocketAddress) waiting.channel().localAddress();
+        InetSocketAddress remote_addr = (InetSocketAddress) waiting.channel().remoteAddress();
+        Console.info("PROXY TCP4 "+remote_addr.getHostString()+" "+local_addr.getHostString()+" "+remote_addr.getPort()+" "+local_addr.getPort());
+        byte[] header = ("PROXY TCP4 "+remote_addr.getHostString()+" "+local_addr.getHostString()+" "+remote_addr.getPort()+" "+local_addr.getPort()+"\r\n").getBytes();
+        ByteBuf data = Unpooled.buffer(header.length,header.length);
+        data.writeBytes(header);
+        ctx1.writeAndFlush(data);
         waiting.pipeline().remove(ProxiedServer.class);
         for (ByteBuf buf : waiting.attr(MCTPVars.PACKET_STACK).get()) {
             ctx1.writeAndFlush(buf);
@@ -72,6 +79,6 @@ public class MCTPConnection {
     }
 
     public String getIp() {
-        return ((InetSocketAddress)ctx.channel().remoteAddress()).getHostName();
+        return ((InetSocketAddress)ctx.channel().remoteAddress()).getHostString();
     }
 }

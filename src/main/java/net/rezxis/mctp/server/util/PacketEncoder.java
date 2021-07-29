@@ -3,7 +3,6 @@ package net.rezxis.mctp.server.util;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import io.netty.util.ReferenceCountUtil;
 
 public class PacketEncoder extends MessageToByteEncoder<ByteBuf> {
 
