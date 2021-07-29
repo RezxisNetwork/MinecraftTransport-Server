@@ -5,7 +5,7 @@
 This is a server software for MinecraftTransport-Client.
 
 # How to Use
-java -jar server.jar <host> <listen_address> <listen_port>
+java -jar server.jar HostName listen_address listen_port
 
 # WARNING
 version 0.0.1-SNAPSHOT and version 0.0.2-SNAPSHOT are not compatible!
