@@ -14,6 +14,7 @@ public class MinecraftTPMain {
 	public static void main(String[] args) {
 		if (args.length != 3) {
 			Console.error("usage : server.jar <host> <listen_address> <listen_port>");
+			return;
 		}
 		host = args[0];
 		listen_host = args[1];
