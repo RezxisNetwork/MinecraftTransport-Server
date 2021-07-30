@@ -38,11 +38,11 @@ public class MCTPServer extends ChannelInboundHandlerAdapter implements Runnable
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childOption(ChannelOption.TCP_NODELAY, true);
 
-            ChannelFuture future = bs.bind(MinecraftTPMain.listen_host,MinecraftTPMain.listen_port).sync();
+            ChannelFuture future = bs.bind(MCTPConfig.instance.listen_host,MCTPConfig.instance.listen_port).sync();
 
             future.channel().closeFuture().sync();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Console.exception(ex);
         } finally {
             worker.shutdownGracefully();
             boss.shutdownGracefully();
@@ -79,7 +79,7 @@ public class MCTPServer extends ChannelInboundHandlerAdapter implements Runnable
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Console.info("occurred exception in mctp connnection from "+((InetSocketAddress)ctx.channel().remoteAddress()).getHostName());
-        cause.printStackTrace();
+        Console.exception(cause);
         if (ctx.channel().isOpen()) {
             ctx.close();
         }
@@ -90,7 +90,7 @@ public class MCTPServer extends ChannelInboundHandlerAdapter implements Runnable
     }
 
     private ByteBuf createPacketReady(MCTPConnection connection) {
-        byte[] data = MinecraftTPMain.host.getBytes(StandardCharsets.UTF_8);
+        byte[] data = MCTPConfig.instance.host.getBytes(StandardCharsets.UTF_8);
         ByteBuf packet = createPacket(9 + data.length);
         packet.writeByte(MCTPVars.CODE_READY);
         packet.writeInt(data.length);

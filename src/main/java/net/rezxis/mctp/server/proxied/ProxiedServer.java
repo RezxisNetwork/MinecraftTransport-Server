@@ -6,9 +6,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import net.rezxis.mctp.server.MCTPConnection;
-import net.rezxis.mctp.server.MCTPVars;
-import net.rezxis.mctp.server.MinecraftTPMain;
+import net.rezxis.mctp.server.*;
 
 import java.util.ArrayList;
 
@@ -42,11 +40,11 @@ public class ProxiedServer extends ChannelInboundHandlerAdapter implements Runna
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childOption(ChannelOption.TCP_NODELAY, true);
 
-            ChannelFuture future = bs.bind(MinecraftTPMain.listen_host,connection.listener_port).sync();
+            ChannelFuture future = bs.bind(MCTPConfig.instance.listen_host,connection.listener_port).sync();
             channel = future.channel();
             future.channel().closeFuture().sync();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Console.exception(ex);
         } finally {
             worker.shutdownGracefully();
             boss.shutdownGracefully();

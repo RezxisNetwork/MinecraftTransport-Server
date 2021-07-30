@@ -26,7 +26,7 @@ public class MCTPConnection {
     }
 
     public void init() {
-        this.listener_port = MinecraftTPMain.PORT_START + new Random().nextInt(MinecraftTPMain.PORT_RANGE);
+        this.listener_port = MCTPConfig.instance.port_start + new Random().nextInt(MCTPConfig.instance.port_range);
         secret = new Random().nextLong();
         children = new HashMap<>();
         proxy = new ProxiedServer(this);

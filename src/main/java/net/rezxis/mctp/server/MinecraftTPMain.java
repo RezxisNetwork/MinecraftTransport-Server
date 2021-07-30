@@ -1,29 +1,24 @@
 package net.rezxis.mctp.server;
 
-import java.net.ServerSocket;
+import java.io.File;
 
 public class MinecraftTPMain {
-
-	public static String host = "mctp1.rezxis.net";
-	public static String listen_host = "0.0.0.0";
-	public static int listen_port = 9998;
-	private static ServerSocket server;
-	public static final int PORT_START = 40000;
-	public static final int PORT_RANGE = 10000;
 	
 	public static void main(String[] args) {
-		if (args.length != 3) {
-			Console.error("usage : server.jar <host> <listen_address> <listen_port>");
+		Console.info("Loading configuration file.");
+		try {
+			MCTPConfig.load(new File("mctp.json"));
+		} catch (Exception e) {
+			Console.error("Failed to load configuration file.");
+			Console.exception(e);
+			System.exit(-1);
 			return;
 		}
-		host = args[0];
-		listen_host = args[1];
-		listen_port = Integer.valueOf(args[2]);
-
+		Console.info("Loaded configuration file.");
 		Console.info("Starting MCTP-Server!");
-		Console.info("Listen : "+listen_host+":"+listen_port);
-		Console.info("Host : "+host);
-		Console.info("Allocated port range: "+PORT_START+"->"+(PORT_START+PORT_RANGE));
+		Console.info("Listen : "+MCTPConfig.instance.listen_host+":"+MCTPConfig.instance.listen_port);
+		Console.info("Host : "+MCTPConfig.instance.host);
+		Console.info("Allocated port range: "+MCTPConfig.instance.port_start+"->"+(MCTPConfig.instance.port_start+MCTPConfig.instance.port_range));
 		new Thread(new MCTPServer()).start();
 	}
 }
