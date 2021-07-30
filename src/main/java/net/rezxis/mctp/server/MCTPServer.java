@@ -7,6 +7,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import net.rezxis.mctp.server.prometheus.MCTPPrometheus;
 import net.rezxis.mctp.server.util.PacketDecoder;
 import net.rezxis.mctp.server.util.PacketEncoder;
 
@@ -73,12 +74,13 @@ public class MCTPServer extends ChannelInboundHandlerAdapter implements Runnable
         MCTPConnection connection = ctx.attr(MCTPVars.CONNECTION_KEY).get();
         connection.close();
         ServerManager.removeConnection(connection);
+        MCTPPrometheus.instance.decreaseConnectedMCTPServers();
         Console.info("disconnected mctp connection from " + connection.getIp());
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        Console.info("occurred exception in mctp connnection from "+((InetSocketAddress)ctx.channel().remoteAddress()).getHostName());
+        Console.info("occurred exception in mctp connnection from "+((InetSocketAddress)ctx.channel().remoteAddress()).getHostString());
         Console.exception(cause);
         if (ctx.channel().isOpen()) {
             ctx.close();

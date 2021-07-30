@@ -24,7 +24,7 @@ public class Console {
 
     public static void exception(Throwable ex) {
         ex.printStackTrace();
-        pw.print(ex.getMessage());
+        ex.printStackTrace(pw);
         pw.flush();
     }
 

@@ -3,6 +3,7 @@ package net.rezxis.mctp.server;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import net.rezxis.mctp.server.prometheus.MCTPPrometheus;
 import net.rezxis.mctp.server.proxied.ProxiedServer;
 import net.rezxis.mctp.server.util.PacketDecoder;
 import net.rezxis.mctp.server.util.PacketEncoder;
@@ -30,6 +31,7 @@ public class MCTPConnection {
         secret = new Random().nextLong();
         children = new HashMap<>();
         proxy = new ProxiedServer(this);
+        MCTPPrometheus.instance.increaseConnectedMCTPServers();
         new Thread(proxy).start();
     }
 
@@ -67,8 +69,9 @@ public class MCTPConnection {
         for (ByteBuf buf : waiting.attr(MCTPVars.PACKET_STACK).get()) {
             ctx1.writeAndFlush(buf);
         }
-        waiting.pipeline().addLast(new ChannelMirror(ctx1.channel()));
-        ctx1.pipeline().addLast(new ChannelMirror(waiting.channel()));
+        waiting.pipeline().addLast(new ChannelMirror(ctx1.channel(), false));
+        ctx1.pipeline().addLast(new ChannelMirror(waiting.channel(), true));
+        MCTPPrometheus.instance.increaseConnectedSessions();
     }
 
     public void close() {

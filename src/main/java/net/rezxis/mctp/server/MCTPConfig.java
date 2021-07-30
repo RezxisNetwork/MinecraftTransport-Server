@@ -15,6 +15,9 @@ public class MCTPConfig {
     public String host;
     public int port_start;
     public int port_range;
+    public boolean enable_prometheus_metrics;
+    public String prometheus_metrics_host;
+    public int prometheus_metrics_port;
 
     public static void load(File file) throws Exception {
         if (!file.exists()) {
@@ -31,6 +34,9 @@ public class MCTPConfig {
         instance.listen_port = 9998;
         instance.port_start = 40000;
         instance.port_range = 10000;
+        instance.enable_prometheus_metrics = false;
+        instance.prometheus_metrics_host = "0.0.0.0";
+        instance.prometheus_metrics_port = 9997;
         instance.host = getMyIp();
         file.createNewFile();
         PrintWriter pw = new PrintWriter(file);

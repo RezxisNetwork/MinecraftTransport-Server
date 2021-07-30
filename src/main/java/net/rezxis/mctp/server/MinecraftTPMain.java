@@ -1,5 +1,7 @@
 package net.rezxis.mctp.server;
 
+import net.rezxis.mctp.server.prometheus.MCTPPrometheus;
+
 import java.io.File;
 
 public class MinecraftTPMain {
@@ -14,6 +16,7 @@ public class MinecraftTPMain {
 			System.exit(-1);
 			return;
 		}
+		new Thread(new MCTPPrometheus()).start();
 		Console.info("Loaded configuration file.");
 		Console.info("Starting MCTP-Server!");
 		Console.info("Listen : "+MCTPConfig.instance.listen_host+":"+MCTPConfig.instance.listen_port);

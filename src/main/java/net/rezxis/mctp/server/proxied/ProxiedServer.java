@@ -7,6 +7,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import net.rezxis.mctp.server.*;
+import net.rezxis.mctp.server.prometheus.MCTPPrometheus;
 
 import java.util.ArrayList;
 
