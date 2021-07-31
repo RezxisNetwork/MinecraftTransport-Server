@@ -19,12 +19,12 @@ public class ChannelMirror extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        if (!dest.isActive())
-            return;
-        dest.close();
         if (notice) {
             MCTPPrometheus.instance.decreaseConnectedSessions();
         }
+        if (!dest.isActive())
+            return;
+        dest.close();
     }
 
     @Override
