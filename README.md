@@ -5,7 +5,22 @@
 This is a server software for MinecraftTransport-Client.
 
 # How to Use
-java -jar server.jar HostName listen_address listen_port
+java -jar server.jar
+
+# Configuration file
+Example of mctp.json as mctp1.nohit.cc
+```
+{
+  "listen_host": "138.3.209.101",
+  "listen_port": 9998,
+  "host": "mctp1.nohit.cc",
+  "port_start": 40000,
+  "port_range": 10000,
+  "enable_prometheus_metrics": true,
+  "prometheus_metrics_host": "138.3.209.101",
+  "prometheus_metrics_port": 9997
+}
+```
 
 # WARNING
 version 0.0.1-SNAPSHOT and version 0.0.2-SNAPSHOT are not compatible!
